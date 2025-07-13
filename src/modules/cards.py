@@ -28,9 +28,9 @@ class Card:
         self.int_value = [int_value, 14] if int_value == 1 else [int_value]
         self.suit = suit
 
+    # Debug
     def __str__(self) -> str:
         return f'{self.value} of {self.suit}'
-
     def __repr__(self):
         return str(self)
     
