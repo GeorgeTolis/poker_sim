@@ -22,6 +22,10 @@ class Player:
     # Updates player's hand
     def new_hand(self, hand: tuple) -> None:
         self.hand = hand
+
+    # Requests player's action
+    def action(self, last_raise: int) -> tuple:
+        return "check", 0 # temporary placeholder
     
     # Debug
     def __str__(self) -> str:
