@@ -3,7 +3,41 @@ from .deck import Deck
 from .cards import Card
 from .player import Player
 
-from itertools import cycle
+import itertools as itr
+from collections import Counter
+
+HAND_RANKS = {
+    "High Card": 0,
+    "One Pair": 1,
+    "Two Pair": 2,
+    "Three of a Kind": 3,
+    "Straight": 4,
+    "Flush": 5,
+    "Full House": 6,
+    "Four of a Kind": 7,
+    "Straight Flush": 8,
+    "Royal Flush": 9
+}
+
+IRRELEVANT_KICKER = Card(0, "")
+
+# Determine best hand from the selected 7 cards
+def evaluate_hand(total_cards) -> tuple:
+    pass
+
+# Evaluate a player's best hand
+def best_player_hand(self, player_hand, board) -> tuple:
+        total_cards = list(player_hand) + board
+
+        best = None
+        best_kicker = None
+        for comb in itr.combinations(total_cards, 5):
+            rank, kicker = evaluate_hand(comb)
+            if best is None or rank > best:
+                best = rank
+                best_kicker = kicker
+
+        return best, best_kicker
 
 class Game:
     def __init__(self, num_of_players: int):
@@ -76,6 +110,21 @@ class Game:
                     players_to_act -= 1
                     self.pot_size += bet
 
+    # Determines winner of the current blind
+    def determin_winner(self) -> list:
+        # Edge case, no player active for some reason, cancel search
+        player_pool = [player for player in self.players if player.active]
+        if len(player_pool) <= 0:
+            return None
+
+        # Assess everyone's best hands and get all players with the same hand
+        player_scores = [(best_player_hand(player.hand, self.board_cards), player) for player in player_pool]
+        player_scores.sort(reverse=True, key=lambda x: (x[0], x[1])) # So that the highest rank is in the lowest position
+        best_hand = player_scores[0]
+
+        # Winners are all players with the same hand and kicker
+        winners = [score for score in player_scores if score[0] == best_hand[0] and score[1] == best_hand[1]]
+        return winners
 
     # Initiates play
     def play(self):
