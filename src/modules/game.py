@@ -214,8 +214,8 @@ class Game:
         
         winners = self.determin_winner()
         for winner in winners:
-            print(f'{winner[1]} won with a {RANK_TO_HAND[winner[0][0]]}')
-        
+            print(f'-> {winner[1]} won with a {RANK_TO_HAND[winner[0][0]]}')
+        print(50 * "-" + "\n")
     
     # Debug
     def __str__(self) -> str:

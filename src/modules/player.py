@@ -10,7 +10,11 @@ class Player:
     hand --> their current hand
     """
     def __init__(self, name=None, balance=1000):
-        self.name = name if name is not None else list_of_names[random.randrange(0, len(list_of_names))]
+        if name is not None:
+            self.name = name
+        else:
+            self.name = list_of_names[random.randrange(0, len(list_of_names))]
+            list_of_names.remove(self.name)
         self.hand = None
         self.active = True
         self.balance = balance
